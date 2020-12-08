@@ -35,6 +35,22 @@ class Db {
     }
   }
 
+  async getRegisterList(callback) {
+    try {
+      await sql.connect(this.setting)
+      const result = await sql.query`select r.CodigoEmp
+                                          , e.Nombres+' '+e.Apellidos as Nombres
+                                          , e.DesCUniOrga
+                                          , r.Fecha 
+                                            from Tb_Registrados r 
+                                                inner join SAP_Inteface..EMPLOYEE e on e.Codigoemp = r.CodigoEmp`
+      callback(null, result)
+
+    } catch (e) {
+      callback(e, null)
+    }
+  }
+
 }
 
 module.exports = new Db();
